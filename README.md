@@ -15,4 +15,4 @@ python manage.py migrate
 
 python manage.py runserver 0.0.0.0:8000
 
-# 서버 실행 후 localhost:8000 혹은 127.0.0.1:8000 에서 실행하시면 됩니다.
+# 서버 실행 후 127.0.0.1:8000 에서 실행하시면 됩니다.
