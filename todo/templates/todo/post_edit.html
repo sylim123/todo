@@ -1,0 +1,29 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+  <div class="row new-todo">
+    <div class="col-xs-12 col-md-6">
+      <h3>수정하기</h3>
+      <form method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">저장</button>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>
+    $(".post-form p").addClass("form-group");
+    $(".post-form p input").addClass("form-control");
+    var $textarea = $(".post-form p textarea");
+    $textarea.addClass("form-control");
+    $textarea.attr("rows", 3);
+    $(".post-form label[for='id_title']").text("제목 (필수)");
+    $(".post-form label[for='id_text']").text("내용 (필수)");
+    $(".post-form label[for='id_due_data']").text("마감일 (선택)");
+    $(".post-form label[for='id_priority']").text("중요도 (1 ~ 6)");
+    var $priority = $(".post-form input[type='number']");
+    $priority.attr("min", 1);
+    $priority.attr("max", 6);
+  </script>
+{% endblock %}

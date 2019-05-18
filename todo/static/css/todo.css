@@ -1,0 +1,34 @@
+.page-header{
+    padding-left: 20px;
+}
+h3{
+    margin-bottom: 30px;
+}
+.over-due{
+    margin-bottom: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.over-due .btn{
+    font-size: 14px;
+}
+.not-finished{
+    margin-bottom: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.not-finished .row.btn-box{
+    padding-bottom: 15px;
+    padding-top: 10px;
+}
+.finished{
+    margin-bottom: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.finished .btn{
+    font-size: 14px;
+}

@@ -1,0 +1,15 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <div class="post">
+        <div class="date">
+            {{ post.created_data }}
+        </div>
+        <div class="date">
+            {{ post.due_data }}
+        </div>
+        <div>중요도: {{ post.priority }}</div>
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endblock %}

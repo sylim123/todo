@@ -1,24 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Todo List</title>
-</head>
-<body>
-  <div>
-    <h1><a href="">Django Girls Blog</a></h1>
-  </div>        
+{% extends 'todo/base.html' %}
 
-  <div>
-      <p>published: 14.06.2014, 12:14</p>
-      <h2><a href="">My first post</a></h2>
-      <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+{% block content %}
+  {% load tz %}
+  <div class="row new-todo">
+    <div class="col-xs-12 col-md-6">
+      <h3>할 일 작성</h3>
+      <form method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">작성</button>
+      </form>
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <h3>마감기한 지난 목록</h3>
+      {% for post in posts %}
+        {% if post.due_data|utc < now2|utc %}
+          <div class="bg-danger over-due">
+            <div class="form-group">
+              <label for="">제목</label>
+              <p>{{ post.title }}</p>
+            </div>
+            <div class="form-group">
+              <label for="">내용</label>
+              <p>{{ post.text|linebreaksbr }}</p>
+            </div>
+            <div class="row">
+              <div class="col-xs-10">
+                <div class="form-group">
+                  <label for="">마감일</label>
+                  <p>{{ post.due_data }}</p>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <a class="btn btn-danger btn-lg btn-block" href="{% url 'post_delete' pk=post.pk %}">삭제</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 
-  <div>
-      <p>published: 14.06.2014, 12:14</p>
-      <h2><a href="">My second post</a></h2>
-      <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut f.</p>
+  <div class="row todo-list">
+    <div class="col-xs-12 col-md-6">
+      <h3>할 일 목록</h3>
+      {% for post in posts %}
+        {% if post.due_data|utc >= now2|utc or post.due_data == null %}
+          <div class="bg-warning not-finished">
+            <div class="form-group">
+              <label for="">제목</label>
+              <p class="text-primary"><strong>{{ post.title }}</strong></p>
+            </div>
+            <div class="form-group">
+              <label for="">내용</label>
+              <p class="text-primary"><strong>{{ post.text|linebreaksbr }}</strong></p>
+            </div>
+            <div class="row">
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="">생성일</label>
+                  <p>{{ post.created_data }}</p>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="">마감일</label>
+                  <p>{{ post.due_data }}</p>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div class="form-group">
+                  <label for="">중요도</label>
+                  {% if post.priority >= 1 and post.priority <= 2 %}
+                    <p class="text-muted">{{ post.priority }}</p>
+                  {% elif post.priority >= 3 and post.priority <= 4 %}
+                    <p class="text-primary">{{ post.priority }}</p>
+                  {% else %}
+                    <p class="text-danger">{{ post.priority }}</p>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <a class="btn btn-default btn-block" href="{% url 'post_priority_down' pk=post.pk %}">
+                  증가
+                </a>
+                <a class="btn btn-default btn-block" href="{% url 'post_priority_up' pk=post.pk %}">
+                  감소
+                </a>
+              </div>
+            </div>
+            <div class="row btn-box">
+              <div class="col-xs-4">
+                <a class="btn btn-danger btn-lg btn-block" href="{% url 'post_delete' pk=post.pk %}">
+                  삭제하기
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a class="btn btn-info btn-lg btn-block" href="{% url 'post_edit' pk=post.pk %}">
+                  수정하기
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'post_check' pk=post.pk %}">
+                  작업완료
+                </a>
+              </div>
+            </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <h3>완료 목록</h3>
+      {% for post in checkedPosts %}
+        <div class="bg-success finished">
+          <div class="form-group">
+            <label for="">제목</label>
+            <p><s>{{ post.title }}</s></p>
+          </div>
+          <div class="form-group">
+            <label for="">내용</label>
+            <p><s>{{ post.text|linebreaksbr }}</s></p>
+          </div>
+          <div class="row">
+            <div class="col-xs-10">
+              <div class="form-group">
+                <label for="">생성일</label>
+                <p><s>{{ post.created_data }}</s></p>
+              </div>
+            </div>
+            <div class="col-xs-2">
+              <a class="btn btn-danger btn-lg btn-block" href="{% url 'post_delete' pk=post.pk %}">삭제</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
-</body>
-</html>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>
+    $(".post-form p").addClass("form-group");
+    $(".post-form p input").addClass("form-control");
+    var $textarea = $(".post-form p textarea");
+    $textarea.addClass("form-control");
+    $textarea.attr("rows", 3);
+    $(".post-form label[for='id_title']").text("제목 (필수)");
+    $(".post-form label[for='id_text']").text("내용 (필수)");
+    $(".post-form label[for='id_due_data']").text("마감일 (선택)");
+    $(".post-form label[for='id_priority']").text("중요도 (1 ~ 6)");
+    var $priority = $(".post-form input[type='number']");
+    $priority.attr("min", 1);
+    $priority.attr("max", 6);
+  </script>
+{% endblock %}
