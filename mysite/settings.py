@@ -25,7 +25,7 @@ SECRET_KEY = 'gvdr=oq0p)mb-v))3(6_68zs9l%9)2x$&8@sx+v)3ur&(wf(1c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.ap-northeast-2.compute.amazonaws.com',]
 
 
 # Application definition
