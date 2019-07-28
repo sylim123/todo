@@ -1,15 +1,8 @@
 # todo
 
-virtualenv --python=python3.5 myvenv
+http://ec2-54-180-142-91.ap-northeast-2.compute.amazonaws.com/
 
-source myvenv/bin/activate # 가상환경 실행
+Todo list
 
-pip install django~=2.0
-
-git clone https://github.com/sylim123/todo.git
-
-cd todo
-
-python manage.py migrate
-
-python manage.py runserver 0.0.0.0:8000
+- used django
+- publised via AWS
